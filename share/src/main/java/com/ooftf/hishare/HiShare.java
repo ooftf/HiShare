@@ -12,11 +12,10 @@ import android.widget.Toast;
 public class HiShare {
     static Application application;
     static int shareType;
-    static Converter<String, Bitmap> urlToBitmap;
 
-    public static void init(Application application, Converter<String, Bitmap> urlToBitmap) {
+
+    public static void init(Application application) {
         HiShare.application = application;
-        HiShare.urlToBitmap = urlToBitmap;
     }
 
     public static void initWXShare(String appId) {

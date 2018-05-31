@@ -3,6 +3,9 @@ package com.ooftf.hishare;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.os.Environment;
+
+import com.bumptech.glide.Glide;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -18,12 +21,12 @@ import io.reactivex.schedulers.Schedulers;
 class BitmapUtils {
 
     @SuppressLint("CheckResult")
-    static Observable<Bitmap> loadImage(final String url) {
+    static Observable<Bitmap> loadImage(String url) {
         return Observable.just(url)
                 .flatMap(new Function<String, ObservableSource<Bitmap>>() {
                     @Override
                     public ObservableSource<Bitmap> apply(String s) throws Exception {
-                        return Observable.just(HiShare.urlToBitmap.convert(url));
+                        return Observable.just(Glide.with(HiShare.application).asBitmap().load(s).into(100,100).get());
                     }
                 }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
