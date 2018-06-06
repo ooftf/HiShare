@@ -55,6 +55,8 @@ HiShare.initTencentShare("腾讯appid");
 ```java
 Hishare.onActivityResult(requestCode,resultCode,data)
 ```
+### 微博
+添加仓库 maven { url "https://dl.bintray.com/thelasterstar/maven/" }
 ### 调用分享
 ```java
  HiShare.ShareParams sp = new HiShare.ShareParams(targetUrl,title,content,imageUrl,image);
