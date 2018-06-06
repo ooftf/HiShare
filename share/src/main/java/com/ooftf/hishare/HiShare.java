@@ -87,4 +87,7 @@ public class HiShare {
     public static void onActivityResult(int requestCode, int resultCode, Intent data) {
         TencentPlatform.onActivityResult(requestCode, resultCode, data);
     }
+    public static void onNewInstance(Intent intent){
+        WbPlatform.onNewIntent(intent);
+    }
 }
