@@ -1,10 +1,13 @@
-package com.ooftf.hishare;
+package com.ooftf.hishare.wx;
 
 import android.app.Activity;
 import android.app.Application;
 import android.graphics.Bitmap;
-import android.util.Log;
 
+import com.ooftf.hishare.BitmapUtils;
+import com.ooftf.hishare.HiShare;
+import com.ooftf.hishare.ISharePlatform;
+import com.ooftf.hishare.ShareCallback;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
@@ -21,27 +24,30 @@ import io.reactivex.disposables.Disposable;
 
 添加到微信收藏——WXSceneFavorite
 * */
-public class WXShare {
-    private static IWXAPI wxapiInstance;
+public class WXPlatform implements ISharePlatform {
+    private IWXAPI wxapiInstance;
     private static Application application;
     private static String appId;
 
     public static void init(Application application, String appId) {
-        WXShare.appId = appId;
-        WXShare.application = application;
+        WXPlatform.appId = appId;
+        WXPlatform.application = application;
     }
 
-    public static IWXAPI getWxapiInstance() {
+    public  IWXAPI getWxapiInstance() {
         if (wxapiInstance == null) {
-            wxapiInstance = WXAPIFactory.createWXAPI(application, appId, false);
+            wxapiInstance = WXAPIFactory.createWXAPI(application, appId);
         }
         return wxapiInstance;
     }
+    static IWXAPI createWXAPI(){
+        return WXAPIFactory.createWXAPI(application, appId);
+    }
 
-    private static void share(Activity activity, final HiShare.ShareParams shareParam, final int scene) {
+    private  void share(Activity activity, final HiShare.ShareParams shareParam, final int scene) {
         if(!getWxapiInstance().isWXAppInstalled()){
             if(callback!=null){
-                callback.onError(HiShare.shareType,ShareCallback.ErrorCode.WX_UNINSTALLED);
+                callback.onError(HiShare.shareType, ShareCallback.ErrorCode.WX_UNINSTALLED);
                 callback=null;
             }
             return;
@@ -78,7 +84,7 @@ public class WXShare {
 
     }
 
-    private static void shareReal(HiShare.ShareParams shareParam, int scene) {
+    private  void shareReal(HiShare.ShareParams shareParam, int scene) {
         WXWebpageObject webPage = new WXWebpageObject();
         webPage.webpageUrl = shareParam.url;
         WXMediaMessage msg = new WXMediaMessage(webPage);
@@ -99,22 +105,36 @@ public class WXShare {
 
     static ShareCallback callback;
     //分享给好友
-    public static void shareSession(Activity activity, HiShare.ShareParams shareParam, ShareCallback callback) {
-        WXShare.callback = callback;
+    private void shareSession(Activity activity, HiShare.ShareParams shareParam, ShareCallback callback) {
+        WXPlatform.callback = callback;
         share(activity, shareParam, SendMessageToWX.Req.WXSceneSession);
     }
     //分享到朋友圈
-    public static void shareTimeline(Activity activity, HiShare.ShareParams shareParam, ShareCallback callback) {
-        WXShare.callback = callback;
-        WXShare.share(activity, shareParam, SendMessageToWX.Req.WXSceneTimeline);
+    private void shareTimeline(Activity activity, HiShare.ShareParams shareParam, ShareCallback callback) {
+        WXPlatform.callback = callback;
+        share(activity, shareParam, SendMessageToWX.Req.WXSceneTimeline);
     }
     //收藏
-    public static void shareFavorite(Activity activity, HiShare.ShareParams shareParam, ShareCallback callback) {
-        WXShare.callback = callback;
-        WXShare.share(activity, shareParam, SendMessageToWX.Req.WXSceneFavorite);
+    private void shareFavorite(Activity activity,HiShare.ShareParams shareParam, ShareCallback callback) {
+        WXPlatform.callback = callback;
+        share(activity, shareParam, SendMessageToWX.Req.WXSceneFavorite);
     }
 
     private static String buildTransaction(final String type) {
         return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
+    }
+
+    @Override
+    public void share(Activity activity, int shareType, HiShare.ShareParams shareParam, ShareCallback callback) {
+        switch (shareType){
+            case HiShare.ShareType.WX_FAVORITE:
+               shareFavorite(activity,shareParam, callback);
+                return;
+            case HiShare.ShareType.WX_FRIEND:
+                shareSession(activity,shareParam, callback);
+                return;
+            case HiShare.ShareType.WX_MOMENT:
+                shareTimeline(activity ,shareParam, callback);
+        }
     }
 }

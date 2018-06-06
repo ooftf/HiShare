@@ -6,12 +6,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.widget.Toast;
 
+import com.ooftf.hishare.tencent.TencentPlatform;
+import com.ooftf.hishare.wx.WXPlatform;
+
 /**
  * 这一层与业务没有关系，只提供分享功能
  */
 public class HiShare {
     static Application application;
-    static int shareType;
+    public static int shareType;
 
 
     public static void init(Application application) {
@@ -19,11 +22,11 @@ public class HiShare {
     }
 
     public static void initWXShare(String appId) {
-        WXShare.init(application, appId);
+        WXPlatform.init(application, appId);
     }
 
     public static void initTencentShare(String appId) {
-        TencentShare.init(application, appId);
+        TencentPlatform.init(application, appId);
     }
 
     public interface ShareType {
@@ -35,20 +38,20 @@ public class HiShare {
 
     public static void share(Activity activity, int shareType, ShareParams shareParam, ShareCallback callback) {
         HiShare.shareType = shareType;
+        ISharePlatform sharePaltform = null;
         switch (shareType) {
             case ShareType.QQ_FRIEND:
-                TencentShare.shareQQ(activity, shareParam, callback);
-                return;
+                sharePaltform = new TencentPlatform();
+                break;
             case ShareType.WX_FAVORITE:
-                WXShare.shareFavorite(activity, shareParam, callback);
-                return;
             case ShareType.WX_FRIEND:
-                WXShare.shareSession(activity, shareParam, callback);
-                return;
             case ShareType.WX_MOMENT:
-                WXShare.shareTimeline(activity, shareParam, callback);
-                return;
+                sharePaltform = new WXPlatform();
         }
+        if (sharePaltform != null) {
+            sharePaltform.share(activity, shareType, shareParam, callback);
+        }
+
     }
 
     public static class ShareParams {
@@ -68,14 +71,14 @@ public class HiShare {
     }
 
     /**
-     * 用于qq分享的回调,如果分享的activity没有调用这个方法就会导致qq分享响应不到回调
+     * 用于qq分享的回调,如果分享的activity没有调用这个方法就会导致qq分享响应不到回调，如果没有调用QQ分享可以不用回调
      *
      * @param requestCode
      * @param resultCode
      * @param data
      */
     public static void onActivityResult(int requestCode, int resultCode, Intent data) {
-        TencentShare.onActivityResult(requestCode, resultCode, data);
+        TencentPlatform.onActivityResult(requestCode, resultCode, data);
     }
 
     public static class DefaultShareCallback implements ShareCallback {
@@ -103,9 +106,5 @@ public class HiShare {
         public void onCancel() {
             Toast.makeText(application, "分享取消", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    interface Converter<S, T> {
-        T convert(S url);
     }
 }

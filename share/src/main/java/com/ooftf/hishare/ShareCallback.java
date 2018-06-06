@@ -1,6 +1,6 @@
 package com.ooftf.hishare;
 
-interface ShareCallback {
+public interface ShareCallback {
     void onError(int shareType, int code);
 
     void onSuccess(int shareType);

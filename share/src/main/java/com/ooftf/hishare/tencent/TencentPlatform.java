@@ -1,10 +1,14 @@
-package com.ooftf.hishare;
+package com.ooftf.hishare.tencent;
 
 import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.ooftf.hishare.BitmapUtils;
+import com.ooftf.hishare.HiShare;
+import com.ooftf.hishare.ISharePlatform;
+import com.ooftf.hishare.ShareCallback;
 import com.tencent.connect.common.Constants;
 import com.tencent.connect.share.QQShare;
 import com.tencent.tauth.IUiListener;
@@ -14,21 +18,22 @@ import com.tencent.tauth.UiError;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
-public class TencentShare {
+public class TencentPlatform implements ISharePlatform {
     private static Application application;
     private static String appId;
+    static IUiListener uiListener;
     public static void init(Application application, String appId){
-        TencentShare.appId =appId;
-        TencentShare.application =application;
+        TencentPlatform.appId =appId;
+        TencentPlatform.application =application;
     }
-    private static Tencent tencentInstance;
-    public static Tencent getTencentInstance() {
+    private  Tencent tencentInstance;
+    public  Tencent getTencentInstance() {
         if (tencentInstance == null) {
             tencentInstance = Tencent.createInstance(appId, application);
         }
         return tencentInstance;
     }
-    public static void shareQQ(final Activity activity, final HiShare.ShareParams shareParam, final ShareCallback callback) {
+    public  void share(final Activity activity,int shareType, final HiShare.ShareParams shareParam, final ShareCallback callback) {
         if(!getTencentInstance().isQQInstalled(application)){
             if(callback!=null){
                 callback.onError(HiShare.shareType,ShareCallback.ErrorCode.QQ_UNINSTALLED);
@@ -61,8 +66,7 @@ public class TencentShare {
             shareReal(activity,shareParam,null,callback);
         }
     }
-    static IUiListener uiListener;
-    static void shareReal(Activity activity, HiShare.ShareParams shareParam, String imageLocalUrl, final ShareCallback callback){
+    void shareReal(Activity activity, HiShare.ShareParams shareParam, String imageLocalUrl, final ShareCallback callback){
         Bundle bundle = new Bundle();
         //分享的标题。注：PARAM_TITLE、PARAM_IMAGE_URL、PARAM_SUMMARY不能全为空，最少必须有一个是有值的。
         bundle.putString(QQShare.SHARE_TO_QQ_TITLE, shareParam.title);

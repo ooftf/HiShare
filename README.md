@@ -35,21 +35,20 @@ HiShare.initTencentShare("腾讯appid");
 ```xml
 <activity
             android:name="com.tencent.tauth.AuthActivity"
-            android:noHistory="true"
-            android:launchMode="singleTask" >
+            android:launchMode="singleTask"
+            android:noHistory="true" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="tencent你的appid" />
+                <data android:scheme="tencent你的AppId" />
             </intent-filter>
-</activity>
-<activity
+ </activity>
+ <activity
             android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="behind"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:configChanges="orientation|keyboardHidden">
-</activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 ```
 如果使用了腾讯分享 就要在onActivityResult中调用下述代码，不然会导致收不到QQ分享的回调
 ```java
@@ -60,4 +59,12 @@ Hishare.onActivityResult(requestCode,resultCode,data)
  HiShare.ShareParams sp = new HiShare.ShareParams(targetUrl,title,content,imageUrl,image);
  HiShare.share(activity,shareType,sp, listener);
 ```
+## 混淆
+### 微博
+-keep class com.sina.weibo.sdk.** { *; }   
+### 微信
+还不确定
+### 腾讯
+不确定
+
 

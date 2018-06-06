@@ -18,10 +18,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
-class BitmapUtils {
+public class BitmapUtils {
 
     @SuppressLint("CheckResult")
-    static Observable<Bitmap> loadImage(String url) {
+    public static Observable<Bitmap> loadImage(String url) {
         return Observable.just(url)
                 .flatMap(new Function<String, ObservableSource<Bitmap>>() {
                     @Override
@@ -38,7 +38,7 @@ class BitmapUtils {
      * @param bitmap
      * @return
      */
-    static Observable<String> pathFromBitmap(Bitmap bitmap) {
+    public static Observable<String> pathFromBitmap(Bitmap bitmap) {
         return Observable.just(bitmap).flatMap(new Function<Bitmap, ObservableSource<String>>() {
 
             @Override
