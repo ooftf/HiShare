@@ -1,3 +1,4 @@
+[![](https://jitpack.io/v/ooftf/HiShare.svg)](https://jitpack.io/#ooftf/HiShare)
 # HiShare
 个人建议：在HiShare的基础上在业务层进行一次封装
 
