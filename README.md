@@ -12,7 +12,7 @@ allprojects {
 	}
 //Add the dependency
 dependencies {
-	        implementation 'com.github.ooftf:HiShare:1.0.0'
+	        implementation 'com.github.ooftf:HiShare:1.2.3'
 	}
 ```
 ## 初始化
