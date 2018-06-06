@@ -26,7 +26,7 @@ public class WbPlatform implements ISharePlatform {
     public static void init(Application application, String appId) {
         WbPlatform.appId = appId;
         WbPlatform.application = application;
-        WbSdk.install(application,new AuthInfo(application,appId,"",""));
+        WbSdk.install(WbPlatform.application,new AuthInfo(WbPlatform.application,appId,"https://api.weibo.com/oauth2/default.html",""));
     }
 
     @Override
