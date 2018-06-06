@@ -27,6 +27,9 @@ public class HiShare {
     public static void initTencentShare(String appId) {
         TencentPlatform.init(application, appId);
     }
+    public static void initWbShare(String appId) {
+        WbPlatform.init(application, appId);
+    }
 
     public interface ShareType {
         int WX_FAVORITE = 0;//微信收藏

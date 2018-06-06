@@ -50,7 +50,7 @@ public class WXEntrysShareActivity extends Activity implements IWXAPIEventHandle
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL://发送取消
                 if (WxPlatform.callback != null) {
-                    WxPlatform.callback.onCancel();
+                    WxPlatform.callback.onCancel(HiShare.shareType);
                     WxPlatform.callback = null;
                 }
                 break;
