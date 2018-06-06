@@ -86,7 +86,7 @@ public class WxPlatform implements ISharePlatform {
 
     private  void shareReal(HiShare.ShareParams shareParam, int scene) {
         WXWebpageObject webPage = new WXWebpageObject();
-        webPage.webpageUrl = shareParam.url;
+        webPage.webpageUrl = shareParam.targetUrl;
         WXMediaMessage msg = new WXMediaMessage(webPage);
         msg.title = shareParam.title;
         msg.description = shareParam.content;

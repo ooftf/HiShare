@@ -78,7 +78,7 @@ public class TencentPlatform implements ISharePlatform {
             bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, shareParam.imageUrl);
         }
         //这条分享消息被好友点击后的跳转URL。
-        bundle.putString(QQShare.SHARE_TO_QQ_TARGET_URL, shareParam.url);
+        bundle.putString(QQShare.SHARE_TO_QQ_TARGET_URL, shareParam.targetUrl);
         //分享的消息摘要，最长50个字
         bundle.putString(QQShare.SHARE_TO_QQ_SUMMARY, shareParam.content);
         uiListener = new IUiListener() {
@@ -99,7 +99,7 @@ public class TencentPlatform implements ISharePlatform {
             @Override
             public void onCancel() {
                 if(callback!=null){
-                    callback.onCancel();
+                    callback.onCancel(HiShare.shareType);
                 }
             }
         };

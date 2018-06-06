@@ -5,7 +5,7 @@ public interface ShareCallback {
 
     void onSuccess(int shareType);
 
-    void onCancel();
+    void onCancel(int shareType);
 
     interface ErrorCode {
         int LOAD_IMAGE = 0;
