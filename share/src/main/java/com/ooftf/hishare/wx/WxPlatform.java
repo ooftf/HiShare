@@ -24,14 +24,14 @@ import io.reactivex.disposables.Disposable;
 
 添加到微信收藏——WXSceneFavorite
 * */
-public class WXPlatform implements ISharePlatform {
+public class WxPlatform implements ISharePlatform {
     private IWXAPI wxapiInstance;
     private static Application application;
     private static String appId;
 
     public static void init(Application application, String appId) {
-        WXPlatform.appId = appId;
-        WXPlatform.application = application;
+        WxPlatform.appId = appId;
+        WxPlatform.application = application;
     }
 
     public  IWXAPI getWxapiInstance() {
@@ -106,17 +106,17 @@ public class WXPlatform implements ISharePlatform {
     static ShareCallback callback;
     //分享给好友
     private void shareSession(Activity activity, HiShare.ShareParams shareParam, ShareCallback callback) {
-        WXPlatform.callback = callback;
+        WxPlatform.callback = callback;
         share(activity, shareParam, SendMessageToWX.Req.WXSceneSession);
     }
     //分享到朋友圈
     private void shareTimeline(Activity activity, HiShare.ShareParams shareParam, ShareCallback callback) {
-        WXPlatform.callback = callback;
+        WxPlatform.callback = callback;
         share(activity, shareParam, SendMessageToWX.Req.WXSceneTimeline);
     }
     //收藏
     private void shareFavorite(Activity activity,HiShare.ShareParams shareParam, ShareCallback callback) {
-        WXPlatform.callback = callback;
+        WxPlatform.callback = callback;
         share(activity, shareParam, SendMessageToWX.Req.WXSceneFavorite);
     }
 

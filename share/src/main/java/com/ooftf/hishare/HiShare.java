@@ -7,7 +7,7 @@ import android.graphics.Bitmap;
 import android.widget.Toast;
 
 import com.ooftf.hishare.tencent.TencentPlatform;
-import com.ooftf.hishare.wx.WXPlatform;
+import com.ooftf.hishare.wx.WxPlatform;
 
 /**
  * 这一层与业务没有关系，只提供分享功能
@@ -22,7 +22,7 @@ public class HiShare {
     }
 
     public static void initWXShare(String appId) {
-        WXPlatform.init(application, appId);
+        WxPlatform.init(application, appId);
     }
 
     public static void initTencentShare(String appId) {
@@ -46,7 +46,7 @@ public class HiShare {
             case ShareType.WX_FAVORITE:
             case ShareType.WX_FRIEND:
             case ShareType.WX_MOMENT:
-                sharePaltform = new WXPlatform();
+                sharePaltform = new WxPlatform();
         }
         if (sharePaltform != null) {
             sharePaltform.share(activity, shareType, shareParam, callback);

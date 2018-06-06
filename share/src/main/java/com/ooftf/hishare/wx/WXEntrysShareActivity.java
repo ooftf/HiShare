@@ -16,7 +16,7 @@ public class WXEntrysShareActivity extends Activity implements IWXAPIEventHandle
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        iwxapi = WXPlatform.createWXAPI();
+        iwxapi = WxPlatform.createWXAPI();
         try {
             iwxapi.handleIntent(getIntent(), this);
         } catch (Exception e) {
@@ -42,34 +42,34 @@ public class WXEntrysShareActivity extends Activity implements IWXAPIEventHandle
     public void onResp(BaseResp resp) {
         switch (resp.errCode) {
             case BaseResp.ErrCode.ERR_OK://发送成功
-                if (WXPlatform.callback != null) {
-                    WXPlatform.callback.onSuccess(HiShare.shareType);
-                    WXPlatform.callback = null;
+                if (WxPlatform.callback != null) {
+                    WxPlatform.callback.onSuccess(HiShare.shareType);
+                    WxPlatform.callback = null;
                 }
 
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL://发送取消
-                if (WXPlatform.callback != null) {
-                    WXPlatform.callback.onCancel();
-                    WXPlatform.callback = null;
+                if (WxPlatform.callback != null) {
+                    WxPlatform.callback.onCancel();
+                    WxPlatform.callback = null;
                 }
                 break;
             case BaseResp.ErrCode.ERR_AUTH_DENIED://发送被拒绝
-                if (WXPlatform.callback != null) {
-                    WXPlatform.callback.onError(HiShare.shareType, ShareCallback.ErrorCode.AUTH_DENIED);
-                    WXPlatform.callback = null;
+                if (WxPlatform.callback != null) {
+                    WxPlatform.callback.onError(HiShare.shareType, ShareCallback.ErrorCode.AUTH_DENIED);
+                    WxPlatform.callback = null;
                 }
                 break;
             case BaseResp.ErrCode.ERR_UNSUPPORT://不支持错误wx
-                if (WXPlatform.callback != null) {
-                    WXPlatform.callback.onError(HiShare.shareType,ShareCallback.ErrorCode.UNSUPPORTED);
-                    WXPlatform.callback = null;
+                if (WxPlatform.callback != null) {
+                    WxPlatform.callback.onError(HiShare.shareType,ShareCallback.ErrorCode.UNSUPPORTED);
+                    WxPlatform.callback = null;
                 }
                 break;
             default://发送返回
-                if (WXPlatform.callback != null) {
-                    WXPlatform.callback.onError(HiShare.shareType,ShareCallback.ErrorCode.UNKNOWN);
-                    WXPlatform.callback = null;
+                if (WxPlatform.callback != null) {
+                    WxPlatform.callback.onError(HiShare.shareType,ShareCallback.ErrorCode.UNKNOWN);
+                    WxPlatform.callback = null;
                 }
                 ;
                 break;

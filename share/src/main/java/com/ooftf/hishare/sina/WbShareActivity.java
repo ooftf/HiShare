@@ -11,7 +11,7 @@ import com.sina.weibo.sdk.api.WeiboMultiMessage;
 import com.sina.weibo.sdk.share.WbShareCallback;
 import com.sina.weibo.sdk.share.WbShareHandler;
 
-public class WBShareActivity extends Activity implements WbShareCallback{
+public class WbShareActivity extends Activity implements WbShareCallback{
     WbShareHandler shareHandler;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
