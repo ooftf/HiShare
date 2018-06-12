@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.widget.Toast;
 
 import com.ooftf.hishare.sina.WbPlatform;
 import com.ooftf.hishare.tencent.TencentPlatform;
@@ -89,5 +90,31 @@ public class HiShare {
     }
     public static void onNewIntent(Intent intent){
         WbPlatform.onNewIntent(intent);
+    }
+    public static class DefaultShareCallback implements ShareCallback {
+
+        @Override
+        public void onError(int shareType, int code) {
+            switch (code) {
+                case ErrorCode.WX_UNINSTALLED:
+                    Toast.makeText(application, "没有检测到微信应用，请安装后再试", Toast.LENGTH_SHORT).show();
+                    break;
+                case ErrorCode.QQ_UNINSTALLED:
+                    Toast.makeText(application, "没有检测到QQ应用，请安装后再试", Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    Toast.makeText(application, "分享失败", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public void onSuccess(int shareType) {
+            Toast.makeText(application, "分享成功", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onCancel(int shareType) {
+            Toast.makeText(application, "分享取消", Toast.LENGTH_SHORT).show();
+        }
     }
 }
