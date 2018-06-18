@@ -8,6 +8,7 @@
 allprojects {
 		repositories {
 			maven { url 'https://jitpack.io' }
+			maven { url "https://dl.bintray.com/thelasterstar/maven/" }
 		}
 	}
 //Add the dependency
