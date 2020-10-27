@@ -46,7 +46,7 @@ public class WxPlatform implements ISharePlatform {
         return WXAPIFactory.createWXAPI(application, appId);
     }
 
-    private void share(Activity activity, final HiShare.ShareParams shareParam, final int scene) {
+    private void share(final HiShare.ShareParams shareParam, final int scene) {
         if (!getWxapiInstance().isWXAppInstalled()) {
             if (callback != null) {
                 callback.onError(HiShare.shareType, ShareCallback.ErrorCode.WX_UNINSTALLED);
@@ -108,21 +108,21 @@ public class WxPlatform implements ISharePlatform {
     static ShareCallback callback;
 
     //分享给好友
-    private void shareSession(Activity activity, HiShare.ShareParams shareParam, ShareCallback callback) {
+    private void shareSession(HiShare.ShareParams shareParam, ShareCallback callback) {
         WxPlatform.callback = callback;
-        share(activity, shareParam, SendMessageToWX.Req.WXSceneSession);
+        share(shareParam, SendMessageToWX.Req.WXSceneSession);
     }
 
     //分享到朋友圈
-    private void shareTimeline(Activity activity, HiShare.ShareParams shareParam, ShareCallback callback) {
+    private void shareTimeline(HiShare.ShareParams shareParam, ShareCallback callback) {
         WxPlatform.callback = callback;
-        share(activity, shareParam, SendMessageToWX.Req.WXSceneTimeline);
+        share(shareParam, SendMessageToWX.Req.WXSceneTimeline);
     }
 
     //收藏
-    private void shareFavorite(Activity activity, HiShare.ShareParams shareParam, ShareCallback callback) {
+    private void shareFavorite(HiShare.ShareParams shareParam, ShareCallback callback) {
         WxPlatform.callback = callback;
-        share(activity, shareParam, SendMessageToWX.Req.WXSceneFavorite);
+        share(shareParam, SendMessageToWX.Req.WXSceneFavorite);
     }
 
     private static String buildTransaction(final String type) {
@@ -130,16 +130,16 @@ public class WxPlatform implements ISharePlatform {
     }
 
     @Override
-    public void share(Activity activity, int shareType, HiShare.ShareParams shareParam, ShareCallback callback) {
+    public void share(int shareType, HiShare.ShareParams shareParam, ShareCallback callback) {
         switch (shareType) {
             case HiShare.ShareType.WX_FAVORITE:
-                shareFavorite(activity, shareParam, callback);
+                shareFavorite(shareParam, callback);
                 return;
             case HiShare.ShareType.WX_FRIEND:
-                shareSession(activity, shareParam, callback);
+                shareSession(shareParam, callback);
                 return;
             case HiShare.ShareType.WX_MOMENT:
-                shareTimeline(activity, shareParam, callback);
+                shareTimeline(shareParam, callback);
         }
     }
 }

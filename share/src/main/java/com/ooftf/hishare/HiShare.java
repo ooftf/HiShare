@@ -40,7 +40,8 @@ public class HiShare {
         int WI_BO = 4;//微博
     }
 
-    public static void share(Activity activity, int shareType, ShareParams shareParam, ShareCallback callback) {
+
+    public static void share(int shareType, ShareParams shareParam, ShareCallback callback) {
         HiShare.shareType = shareType;
         ISharePlatform sharePaltform = null;
         switch (shareType) {
@@ -57,7 +58,7 @@ public class HiShare {
                 break;
         }
         if (sharePaltform != null) {
-            sharePaltform.share(activity, shareType, shareParam, callback);
+            sharePaltform.share(shareType, shareParam, callback);
         }
 
     }
@@ -78,17 +79,4 @@ public class HiShare {
         public Bitmap bitmap;
     }
 
-    /**
-     * 用于qq分享的回调,如果分享的activity没有调用这个方法就会导致qq分享响应不到回调，如果没有调用QQ分享可以不用回调
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     */
-    public static void onActivityResult(int requestCode, int resultCode, Intent data) {
-        TencentPlatform.onActivityResult(requestCode, resultCode, data);
-    }
-    public static void onNewIntent(Intent intent){
-        WbPlatform.onNewIntent(intent);
-    }
 }

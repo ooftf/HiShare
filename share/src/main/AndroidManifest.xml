@@ -1,4 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ooftf.hishare" />
+    package="com.ooftf.hishare">
+
+    <application>
+
+        <activity
+            android:name="com.ooftf.hishare.QQTempActivity"
+            android:theme="@style/HiShareTranslucentTheme" />
+        <activity
+            android:name="com.ooftf.hishare.WbTempActivity"
+            android:theme="@style/HiShareTranslucentTheme" />
+    </application>
+</manifest>
 
 
