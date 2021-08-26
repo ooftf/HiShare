@@ -9,25 +9,28 @@ import com.ooftf.hishare.HiShare;
 import com.ooftf.hishare.ISharePlatform;
 import com.ooftf.hishare.ShareCallback;
 import com.ooftf.hishare.WbTempActivity;
-import com.sina.weibo.sdk.WbSdk;
 import com.sina.weibo.sdk.api.ImageObject;
 import com.sina.weibo.sdk.api.TextObject;
 import com.sina.weibo.sdk.api.WeiboMultiMessage;
 import com.sina.weibo.sdk.auth.AuthInfo;
+import com.sina.weibo.sdk.common.UiError;
+import com.sina.weibo.sdk.openapi.IWBAPI;
+import com.sina.weibo.sdk.openapi.WBAPIFactory;
 import com.sina.weibo.sdk.share.WbShareCallback;
-import com.sina.weibo.sdk.share.WbShareHandler;
+
 
 public class WbPlatform implements ISharePlatform {
     public static WbPlatform current;
     private static Application application;
     private static String appId;
     private  ShareCallback callback;
-    private  WbShareHandler shareHandler;
+    private static IWBAPI iwbapi;
 
     public static void init(Application application, String appId) {
         WbPlatform.appId = appId;
         WbPlatform.application = application;
-        WbSdk.install(WbPlatform.application, new AuthInfo(WbPlatform.application, appId, "https://api.weibo.com/oauth2/default.html", ""));
+        iwbapi =  WBAPIFactory.createWBAPI(application);
+        iwbapi.registerApp(WbPlatform.application, new AuthInfo(WbPlatform.application, appId, "https://api.weibo.com/oauth2/default.html", ""));
     }
     HiShare.ShareParams shareParam;
     @Override
@@ -40,9 +43,8 @@ public class WbPlatform implements ISharePlatform {
         application.startActivity(intent);
     }
 
-    public void shareReal(Activity activity) {
-        shareHandler = new WbShareHandler(activity);
-        shareHandler.registerApp();
+    public void shareReal() {
+
         WeiboMultiMessage message = new WeiboMultiMessage();
         message.textObject = new TextObject();
         message.textObject.text = shareParam.content;
@@ -53,18 +55,18 @@ public class WbPlatform implements ISharePlatform {
             message.imageObject.imagePath = shareParam.imageUrl;
         }
         if (shareParam.bitmap != null) {
-            message.imageObject.setImageObject(shareParam.bitmap);
+            message.imageObject.setImageData(shareParam.bitmap);
         }
-        shareHandler.shareMessage(message, false);
+        iwbapi.shareMessage(message, false);
     }
 
     public  void onNewIntent(Intent intent) {
-        if (shareHandler == null) {
+        if (iwbapi == null) {
             return;
         }
-        shareHandler.doResultIntent(intent, new WbShareCallback() {
+        iwbapi.doResultIntent(intent, new WbShareCallback() {
             @Override
-            public void onWbShareSuccess() {
+            public void onComplete() {
                 if (callback != null) {
                     callback.onSuccess(HiShare.shareType);
                     callback = null;
@@ -72,21 +74,20 @@ public class WbPlatform implements ISharePlatform {
             }
 
             @Override
-            public void onWbShareCancel() {
-                if (callback != null) {
-                    callback.onCancel(HiShare.shareType);
-                    callback = null;
-                }
-            }
-
-            @Override
-            public void onWbShareFail() {
+            public void onError(UiError uiError) {
                 if (callback != null) {
                     callback.onError(HiShare.shareType, ShareCallback.ErrorCode.UNKNOWN);
                     callback = null;
                 }
             }
+
+            @Override
+            public void onCancel() {
+                if (callback != null) {
+                    callback.onCancel(HiShare.shareType);
+                    callback = null;
+                }
+            }
         });
-        shareHandler = null;
     }
 }

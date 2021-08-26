@@ -15,13 +15,13 @@ public class WbTempActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WbPlatform.current.shareReal(this);
+        WbPlatform.current.shareReal();
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        WbPlatform.current.onNewIntent(intent);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        WbPlatform.current.onNewIntent(data);
         finish();
     }
 

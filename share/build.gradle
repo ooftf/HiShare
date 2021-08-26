@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'ooftf-publish'
+apply plugin: 'ooftf-maven'
 android {
     compileSdkVersion 29
 
@@ -24,17 +24,18 @@ android {
 }
 publish {
     artifactId = 'hi-share' //project name
-    publishVersion = '2.0.0-beta1' //version code
+    version = '2.0.0' //version code
 }
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
-    compileOnly 'com.github.bumptech.glide:glide:4.11.0'
+    api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:6.7.9'
+    compileOnly 'com.github.bumptech.glide:glide:4.12.0'
     compileOnly 'io.reactivex.rxjava2:rxandroid:2.1.1'
     compileOnly 'io.reactivex.rxjava2:rxjava:2.2.19'
-    api 'com.sina.weibo.sdk:core:4.2.7:openDefaultRelease@aar'
+    api 'io.github.sinaweibosdk:core:11.8.0@aar'
     api "androidx.appcompat:appcompat:1.2.0"
 }
